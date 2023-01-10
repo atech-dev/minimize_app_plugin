@@ -19,5 +19,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.vanethos.minimize_app
+        # package: com.vanethos.minimize_app
         pluginClass: MinimizeAppPlugin
