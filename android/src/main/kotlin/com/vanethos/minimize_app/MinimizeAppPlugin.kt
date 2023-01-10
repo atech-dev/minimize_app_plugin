@@ -15,40 +15,35 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 
 /** MinimizeAppPlugin */
 public class MinimizeAppPlugin(): FlutterPlugin, MethodCallHandler, ActivityAware {
-  public var activity : Activity? = null
-
-  override fun onDetachedFromActivity() {}
-
-  override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-    onAttachedToActivity(binding)
-  }
-
-  override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    this.activity = binding.activity
-  }
-
-  override fun onDetachedFromActivityForConfigChanges() {}
-
+  private lateinit var channel : MethodChannel
+  private lateinit var activity: Activity
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    val channel = MethodChannel(flutterPluginBinding?.getFlutterEngine()?.getDartExecutor(), "minimize_app")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "minimize_app")
     channel.setMethodCallHandler(this)
   }
-
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {}
-
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "minimize_app")
-      val plugin = MinimizeAppPlugin();
-      plugin.activity = registrar.activity()
-      channel.setMethodCallHandler(plugin)
-    }
+  
+  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    result.notImplemented()
   }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    this.activity?.moveTaskToBack(true)
-    result.success(null)
+  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+    channel.setMethodCallHandler(null)
+  }
+
+  override fun onAttachedToActivity(@NonNull activityPluginBinding: ActivityPluginBinding) {
+    activity = activityPluginBinding.getActivity();
+  }
+
+  override fun onReattachedToActivityForConfigChanges(@NonNull activityPluginBinding: ActivityPluginBinding) {
+    activity = activityPluginBinding.getActivity();
+  }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    // no op
+  }
+
+  override fun onDetachedFromActivity() {
+    // no op
   }
 }
