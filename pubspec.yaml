@@ -18,6 +18,6 @@ dev_dependencies:
 flutter:
   plugin:
     platforms:
-      android:
+      # android:
         # package: com.vanethos.minimize_app
-        pluginClass: MinimizeAppPlugin
+        # pluginClass: MinimizeAppPlugin
