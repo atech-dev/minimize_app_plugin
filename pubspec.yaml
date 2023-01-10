@@ -22,4 +22,4 @@ flutter:
         package: com.vanethos.minimize_app
         pluginClass: MinimizeAppPlugin
       ios:
-        pluginClass: SwiftMinimizeAppPlugin
+        pluginClass: MinimizeAppPlugin
